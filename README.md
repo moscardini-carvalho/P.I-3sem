@@ -1,16 +1,115 @@
-# Forkando e clonando este repositório
+# SketchHood - StreetWear (Loja de roupas) 🏪👕
 
-**OBS.: este procedimento é IMPRESCINDÍVEL para que, posteriormente, o aluno possa entregar o Trabalho 1 da disciplina.**
+## 🛠️ Descrição do Projeto
+**SketchHood - Streetwear** é uma aplicação web desenvolvida para gerenciar uma loja de roupas com foco na moda urbana e cultura street. O sistema permite que lojistas tenham controle completo sobre suas operações de forma prática e centralizada.
 
-1. Faça _login_ no [GitHub](https://github.com).
-2. Acesse [https://github.com/faustocintra/bn-dsm-2025-1](https://github.com/faustocintra/bn-dsm-2025-1).
-3. Clique sobre o botão `[Fork]` no canto superior direito.
-4. Na página seguinte ("Create new fork"), não altere nada, simplesmente clique sobre o botão `[Create fork]`. Aguarde.
-5. Confira se a URL mostrada no navegador corresponde a "https://github.com/**<SEU USUÁRIO>**/bn-dsm-2025-1".
-6. Clique sobre o botão verde `[Code]` e copie o endereço do seu repositório forkado.
-7. Abra o Visual Studio Code. Se houver algum projeto aberto, feche-o usando a opção de menu `Arquivo > Fechar Pasta` (ou `File > Close folder`).
-8. Clique sobre o botão que se parece com um `Y` na barra vertical esquerda do Visual Studio Code. Em seguida, clique sobre o botão `[Clonar repositório...]` (ou `[Clone repository...]`). Nessa etapa, se o Git não estiver instalado na máquina, será necessário baixá-lo (a partir de [https://git-scm.com/](https://git-scm.com/)) e instalá-lo antes de poder clonar o repositório.
-9. Na caixa de diálogo que se abre no alto da janela, cole o endereço do repositório copiado no passo 6.
-10. Escolha um pasta local do computador para armazenar os arquivos do repositório clonado.
-11. Ao ser perguntado se deseja abrir o repositório clonado, clique sobre o botão `[Abrir]`.
+## 🔑 Funcionalidades principais
 
+- 📈 Cadastro e gerenciamento de produtos (camisetas, bonés, acessórios etc.)
+
+- ✨ Controle de estoque com atualização automática a cada venda
+
+- 💰 Carrinho de compras e sistema de pedidos
+
+- 📈 Cadastro e gerenciamento de clientes
+
+- 📶 Área administrativa para controle de vendas e produtos
+
+- 📶 Painel de relatórios simples com visão geral do negócio
+
+- 🔒 Integração com métodos de pagamento (fictício ou real)
+
+- 💻 Design responsivo com identidade visual voltada ao streetwear retrô
+
+## 🎯 Objetivo
+
+O principal objetivo deste projeto é centralizar a gestão de uma loja de roupas streetwear em uma única plataforma, permitindo que o lojista tenha controle total sobre estoque, pedidos e cadastro de clientes. Além disso, o sistema oferece uma área de compras para os clientes, onde é possível visualizar os produtos disponíveis, adicionar itens ao carrinho e finalizar pedidos de forma prática. A proposta é reduzir erros manuais, otimizar o processo de vendas e proporcionar uma experiência completa tanto para o lojista quanto para o consumidor final.
+
+## 🧪 Tecnologias Utilizadas
+
+**Frontend**:
+
+**React.js**: Biblioteca JavaScript para construção da interface de usuário de forma modular e reativa.
+
+**JavaScript (ES6+)**: Para lógica de interação, manipulação de dados e funcionalidades do cliente.
+
+**HTML5**: Estruturação das páginas e componentes visuais.
+
+**CSS3**: Estilização e responsividade do layout.
+
+**Backend**:
+
+**Node.js**: Ambiente de execução JavaScript utilizado no servidor.
+
+**Express.js**: Framework para construção de APIs RESTful e gerenciamento das rotas do backend.
+
+**Banco de Dados**:
+
+**MongoDB**: Banco de dados NoSQL utilizado para armazenar informações como produtos, pedidos, usuários e dados da loja.
+
+**Prisma ORM**: ORM utilizado para facilitar a comunicação entre a aplicação Node.js e o banco de dados MongoDB, com consultas mais seguras e estruturadas.
+
+## 🚀 Como Usar
+
+**✅ Pré-requisitos**
+
+- Node.js instalado
+
+- MongoDB em execução
+
+- Navegador moderno
+
+## 📦 Passos para rodar a aplicação
+
+ - Clone o repositório
+
+```
+git clone https://github.com/seu-usuario/seu-repositorio.git
+```
+
+**Instale as dependências**
+
+```
+# Backend
+cd backend
+npm install
+
+# Frontend
+cd ../frontend
+npm install
+```
+
+**Crie um arquivo .env na pasta backend com a URL do MongoDB:**
+
+ini
+Copiar
+Editar
+DATABASE_URL="mongodb+srv://<usuario>:<senha>@cluster.mongodb.net/<database>?retryWrites=true&w=majority"
+Inicie o servidor
+
+bash
+Copiar
+Editar
+# Backend
+cd backend
+npm run dev
+Inicie o frontend
+
+bash
+Copiar
+Editar
+cd ../frontend
+npm start
+Acesse no navegador
+
+arduino
+Copiar
+Editar
+http://localhost:3000
+
+## Participantes do projeto
+
+1- João Pedro Moscardini Carvalho<br>
+2- Ellorá Nataly de Souza Oliverio<br>
+3- Guilherme Dilio de Souza<br>
+4- Thiago Dourado
