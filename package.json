@@ -1,0 +1,10 @@
+{
+  "name": "aplicacao-mongodb",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run dev --prefix back-end\" \"npm start --prefix front-end\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
