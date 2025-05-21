@@ -8,7 +8,10 @@ import {
   Alert,
   MenuItem,
   Container,
+  Box,
+  IconButton,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import api from '../services/api';
 
 function CadastroProduto() {
@@ -24,6 +27,7 @@ function CadastroProduto() {
     fornecedor_ids: [],
   });
 
+  const [selectedImages, setSelectedImages] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [fornecedores, setFornecedores] = useState([]);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -57,16 +61,47 @@ function CadastroProduto() {
     }
   };
 
+  const handleImageChange = (e) => {
+    if (e.target.files) {
+      const newImages = Array.from(e.target.files);
+      setSelectedImages(prev => [...prev, ...newImages]);
+    }
+  };
+
+  const removeImage = (index) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = {
-        ...formData,
-        quantidade: parseFloat(formData.quantidade),
-        preco_unitario: parseFloat(formData.preco_unitario),
-        qtd_estoque: parseFloat(formData.qtd_estoque),
-      };
-      await api.post('/produtos', data);
+      const formDataToSend = new FormData();
+      
+      // Adiciona os campos do formulário
+      Object.keys(formData).forEach(key => {
+        if (key === 'fornecedor_ids') {
+          formData[key].forEach(id => {
+            formDataToSend.append('fornecedor_ids[]', id);
+          });
+        } else if (['quantidade', 'preco_unitario', 'qtd_estoque'].includes(key)) {
+          // Converte campos numéricos para Float
+          formDataToSend.append(key, parseFloat(formData[key]));
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+
+      // Adiciona as imagens
+      selectedImages.forEach(image => {
+        formDataToSend.append('imagens', image);
+      });
+
+      await api.post('/produtos', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       setMessage({ type: 'success', text: 'Produto cadastrado com sucesso!' });
       setFormData({
         nome: '',
@@ -79,6 +114,7 @@ function CadastroProduto() {
         categoria_id: '',
         fornecedor_ids: [],
       });
+      setSelectedImages([]);
     } catch (error) {
       let errorMsg = 'Erro ao cadastrar produto.';
       if (error.response && error.response.data) {
@@ -103,7 +139,7 @@ function CadastroProduto() {
     <Container maxWidth="lg" sx={{ mt: 6, mb: 6 }}>
       <Paper elevation={3} sx={{ p: 6 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Cadastro de Produto (Camiseta)
+          Cadastro de Produto
         </Typography>
         {message.text && (
           <Alert severity={message.type} sx={{ mb: 2 }}>
@@ -234,6 +270,52 @@ function CadastroProduto() {
                 </TextField>
               </Grid>
             )}
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                Imagens do Produto
+              </Typography>
+              <Box sx={{ mb: 2 }}>
+                <input
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  id="image-upload"
+                  type="file"
+                  multiple
+                  onChange={handleImageChange}
+                />
+                <label htmlFor="image-upload">
+                  <Button variant="contained" component="span">
+                    Adicionar Imagens
+                  </Button>
+                </label>
+              </Box>
+              <Grid container spacing={2}>
+                {selectedImages.map((image, index) => (
+                  <Grid item key={index}>
+                    <Box sx={{ position: 'relative' }}>
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`Preview ${index + 1}`}
+                        style={{ width: 100, height: 100, objectFit: 'cover' }}
+                      />
+                      <IconButton
+                        size="small"
+                        sx={{
+                          position: 'absolute',
+                          top: -8,
+                          right: -8,
+                          bgcolor: 'white',
+                          '&:hover': { bgcolor: 'grey.100' },
+                        }}
+                        onClick={() => removeImage(index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
             <Grid item xs={12}>
               <Button
                 type="submit"

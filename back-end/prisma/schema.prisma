@@ -86,6 +86,7 @@ model Produto {
   unidade_medida    String
   preco_unitario    Float
   qtd_estoque       Float
+  imagens           String[]      // Array para armazenar URLs das imagens
   categoria_id      String        @db.ObjectId
   categoria         Categoria     @relation(fields: [categoria_id], references: [id])
   fornecedores      Fornecedor[]  @relation(fields: [fornecedor_ids], references: [id])

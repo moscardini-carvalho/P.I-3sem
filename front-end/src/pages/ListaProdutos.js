@@ -12,6 +12,8 @@ import {
   Alert,
   Container,
   Button,
+  ImageList,
+  ImageListItem,
 } from '@mui/material';
 import api from '../services/api';
 
@@ -47,6 +49,7 @@ function ListaProdutos() {
             <TableHead>
               <TableRow>
                 <TableCell>Nº</TableCell>
+                <TableCell>Imagens</TableCell>
                 <TableCell>Nome</TableCell>
                 <TableCell>Marca</TableCell>
                 <TableCell>Preço Unitário</TableCell>
@@ -58,6 +61,26 @@ function ListaProdutos() {
               {produtos.map((produto, index) => (
                 <TableRow key={produto.id}>
                   <TableCell>{String(index + 1).padStart(2, '0')}</TableCell>
+                  <TableCell>
+                    {produto.imagens && produto.imagens.length > 0 ? (
+                      <ImageList sx={{ width: 200, height: 100 }} cols={2} rowHeight={100}>
+                        {produto.imagens.map((imagem, idx) => (
+                          <ImageListItem key={idx}>
+                            <img
+                              src={`${process.env.REACT_APP_API_URL || ''}${imagem}`}
+                              alt={`${produto.nome} - Imagem ${idx + 1}`}
+                              loading="lazy"
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          </ImageListItem>
+                        ))}
+                      </ImageList>
+                    ) : (
+                      <Typography variant="body2" color="text.secondary">
+                        Sem imagens
+                      </Typography>
+                    )}
+                  </TableCell>
                   <TableCell>{produto.nome}</TableCell>
                   <TableCell>{produto.marca}</TableCell>
                   <TableCell>{produto.preco_unitario}</TableCell>

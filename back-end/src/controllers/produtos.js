@@ -1,13 +1,26 @@
 import prisma from '../database/client.js'
 import { includeRelations } from '../lib/utils.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const controller = {}   // Objeto vazio
 
 controller.create = async function(req, res) {
   try {
+    // Prepara os dados do produto
+    const produtoData = { ...req.body }
+    
+    // Se houver arquivos enviados, adiciona as URLs das imagens
+    if (req.files && req.files.length > 0) {
+      produtoData.imagens = req.files.map(file => `/uploads/${file.filename}`)
+    }
+
     // Cria o produto
     const novoProduto = await prisma.produto.create({ 
-      data: req.body,
+      data: produtoData,
       include: {
         fornecedores: true
       }
@@ -94,12 +107,20 @@ controller.retrieveOne = async function(req, res) {
 
 controller.update = async function(req, res) {
   try {
+    // Prepara os dados do produto
+    const produtoData = { ...req.body }
+    
+    // Se houver arquivos enviados, adiciona as URLs das imagens
+    if (req.files && req.files.length > 0) {
+      produtoData.imagens = req.files.map(file => `/uploads/${file.filename}`)
+    }
+
     // Se houver fornecedor_ids no body da requisição
     if(req.body.fornecedor_ids) {
       // Primeiro, atualiza o produto
       const updatedProduto = await prisma.produto.update({
         where: { id: req.params.id },
-        data: req.body,
+        data: produtoData,
         include: { fornecedores: true }
       })
 
@@ -120,7 +141,7 @@ controller.update = async function(req, res) {
       // Se não houver fornecedor_ids, apenas atualiza o produto normalmente
       await prisma.produto.update({
         where: { id: req.params.id },
-        data: req.body
+        data: produtoData
       })
     }
 
