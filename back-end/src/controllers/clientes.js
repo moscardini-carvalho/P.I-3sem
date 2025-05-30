@@ -3,6 +3,25 @@ import { includeRelations } from '../lib/utils.js'
 
 const controller = {}   // Objeto vazio
 
+// Função para converter data do formato brasileiro para ISO
+function converterDataParaISO(dataString) {
+  if (!dataString) return null;
+  
+  // Se já estiver no formato ISO, retorna como está
+  if (/^\d{4}-\d{2}-\d{2}/.test(dataString)) {
+    return dataString + 'T00:00:00.000Z';
+  }
+  
+  // Converte do formato dd/mm/yyyy para yyyy-mm-dd
+  const partes = dataString.split('/');
+  if (partes.length === 3) {
+    const [dia, mes, ano] = partes;
+    return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}T00:00:00.000Z`;
+  }
+  
+  return null;
+}
+
 controller.create = async function(req, res) {
   /* Conecta-se ao BD e envia uma instrução de criação
      de um novo documento, contendo os dados que vieram
@@ -17,7 +36,13 @@ if (req.body.data_nascimento && typeof req.body.data_nascimento === 'string') {
   }
 }
   try {
-    await prisma.cliente.create({ data: req.body })
+    // Converte a data para o formato ISO
+    const dadosCliente = {
+      ...req.body,
+      data_nascimento: converterDataParaISO(req.body.data_nascimento)
+    };
+
+    await prisma.cliente.create({ data: dadosCliente })
 
     // Envia uma mensagem de sucesso ao front-end
     // HTTP 201: Created
@@ -88,12 +113,18 @@ controller.retrieveOne = async function(req, res) {
 
 controller.update = async function(req, res) {
   try {
+    // Converte a data para o formato ISO
+    const dadosCliente = {
+      ...req.body,
+      data_nascimento: converterDataParaISO(req.body.data_nascimento)
+    };
+
     // Busca o documento pelo id passado como parâmetro e,
     // caso o documento seja encontrado, atualiza-o com as
     // informações passadas em req.body
     await prisma.cliente.update({
       where: { id: req.params.id },
-      data: req.body
+      data: dadosCliente
     })
 
     // Encontrou e atualizou ~> retorna HTTP 204: No Content

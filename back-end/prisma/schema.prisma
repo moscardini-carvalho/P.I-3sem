@@ -75,6 +75,7 @@ model Pedido {
   cliente_id        String        @db.ObjectId
   cliente           Cliente       @relation(fields: [cliente_id], references: [id])
   itens             ItemPedido[]
+  fotos             ImagemProduto[]  // Relação com as fotos do produto (aponta para o model renomeado)
 }
 
 model Produto {
@@ -86,10 +87,22 @@ model Produto {
   unidade_medida    String
   preco_unitario    Float
   qtd_estoque       Float
-  imagens           String[]      // Array para armazenar URLs das imagens
   categoria_id      String        @db.ObjectId
   categoria         Categoria     @relation(fields: [categoria_id], references: [id])
   fornecedores      Fornecedor[]  @relation(fields: [fornecedor_ids], references: [id])
   fornecedor_ids    String[]      @db.ObjectId
   itens_pedido      ItemPedido[]
+  fotos             ImagemProduto[] // Relação com as fotos do produto
+}
+
+model ImagemProduto {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  produto_id    String   @db.ObjectId
+  produto       Produto  @relation(fields: [produto_id], references: [id])
+  pedido_id     String   @db.ObjectId
+  pedido        Pedido   @relation(fields: [pedido_id], references: [id])
+  imagem        Bytes
+  mime_type     String
+  nome          String?
+  criado_em     DateTime @default(now())
 }

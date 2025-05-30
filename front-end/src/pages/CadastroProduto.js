@@ -183,6 +183,7 @@ function CadastroProduto() {
                 label="Quantidade"
                 name="quantidade"
                 type="number"
+                inputProps={{ step: "0.01" }}
                 value={formData.quantidade}
                 onChange={handleChange}
                 required
@@ -204,72 +205,61 @@ function CadastroProduto() {
                 label="Preço Unitário"
                 name="preco_unitario"
                 type="number"
+                inputProps={{ step: "0.01" }}
                 value={formData.preco_unitario}
                 onChange={handleChange}
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextField
                 fullWidth
                 label="Quantidade em Estoque"
                 name="qtd_estoque"
                 type="number"
+                inputProps={{ step: "0.01" }}
                 value={formData.qtd_estoque}
                 onChange={handleChange}
                 required
               />
             </Grid>
-            {categorias.length > 0 && (
-              <Grid item xs={12}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Categoria"
-                  name="categoria_id"
-                  value={formData.categoria_id}
-                  onChange={handleChange}
-                  required
-                  sx={{ mb: 3 }}
-                >
-                  <MenuItem value="">Selecione uma categoria</MenuItem>
-                  {categorias.map((cat, idx) => (
-                    <MenuItem key={cat.id} value={cat.id}>
-                      {`${String(idx + 2).padStart(2, '0')} - ${cat.descricao}`}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-            )}
-            {fornecedores.length > 0 && (
-              <Grid item xs={12}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Fornecedores"
-                  name="fornecedor_ids"
-                  value={formData.fornecedor_ids}
-                  onChange={handleChange}
-                  SelectProps={{
-                    multiple: true,
-                    renderValue: (selected) => {
-                      if (!selected.length) return '';
-                      return fornecedores
-                        .filter(f => selected.includes(f.id))
-                        .map((f, idx) => `${String(fornecedores.findIndex(x => x.id === f.id) + 1).padStart(2, '0')} - ${f.razao_social}`)
-                        .join(', ');
-                    }
-                  }}
-                  sx={{ mb: 3 }}
-                >
-                  {fornecedores.map((forn, idx) => (
-                    <MenuItem key={forn.id} value={forn.id}>
-                      {`${String(idx + 1).padStart(2, '0')} - ${forn.razao_social}`}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-            )}
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                select
+                label="Categoria"
+                name="categoria_id"
+                value={formData.categoria_id}
+                onChange={handleChange}
+                required
+              >
+                {categorias.map((categoria) => (
+                  <MenuItem key={categoria.id} value={categoria.id}>
+                    {categoria.descricao}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                fullWidth
+                select
+                label="Fornecedores"
+                name="fornecedor_ids"
+                value={formData.fornecedor_ids}
+                onChange={handleChange}
+                SelectProps={{
+                  multiple: true,
+                }}
+                required
+              >
+                {fornecedores.map((fornecedor) => (
+                  <MenuItem key={fornecedor.id} value={fornecedor.id}>
+                    {fornecedor.razao_social}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 Imagens do Produto

@@ -10,4 +10,10 @@ router.get('/:id', controller.retrieveOne)
 router.put('/:id', upload.array('imagens', 5), controller.update)
 router.delete('/:id', controller.delete)
 
+// Nova rota para listar imagens de um produto
+router.get('/:id/imagens', controller.getImagensByProduto);
+
+// Nova rota para servir uma imagem pelo seu ID
+router.get('/imagens-produto/:id', controller.getImagem);
+
 export default router
